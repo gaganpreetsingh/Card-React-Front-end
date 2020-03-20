@@ -17,20 +17,20 @@ class CardComponent extends Component {
     render() {
         let { cardHolderName, limit, cardNumber } = this.state
         return (
-            
+
             <div className="jumbotron">
-                
+
                 <div className="container">
                     <div className="row">
                         <div className="column">
                             <h3>Credit Card System</h3>
-                            
+
                             <Formik
                                 initialValues={{ cardHolderName, limit, cardNumber }}
                                 validate={this.validate}
                                 onSubmit={this.onSubmit}
-                                onReset ={this.onReset}
-                                    
+                                onReset={this.onReset}
+
                                 validateOnChange={false}
                                 validateOnBlur={false}
                                 enableReinitialize={true}
@@ -38,7 +38,7 @@ class CardComponent extends Component {
                                 {
                                     (props) => (
                                         <Form>
-                                            <div id="error" style={{display: 'none' }} className='alert alert-warning'></div>
+                                            <div id="error" style={{ display: 'none' }} className='alert alert-warning'></div>
                                             <div className="form-group">
                                                 <fieldset className="form-group">
                                                     <label>Card Holder Name</label>
@@ -61,7 +61,7 @@ class CardComponent extends Component {
                                                 </fieldset>
                                             </div>
                                             <button className="btn btn-success" type="submit">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <button className="btn btn-success" type="reset">Reset</button>
+                                            <button className="btn btn-success" id="reset" type="reset">Reset</button>
                                             <br /><br />
                                         </Form>
                                     )
@@ -75,9 +75,9 @@ class CardComponent extends Component {
         )
     }
 
-    onReset(){
-        document.getElementById("error").textContent=''
-        document.getElementById("error").style.display='none';
+    onReset() {
+        document.getElementById("error").textContent = ''
+        document.getElementById("error").style.display = 'none'
     }
     onSubmit(values) {
 
@@ -92,20 +92,32 @@ class CardComponent extends Component {
                 response => {
                     if (response.status === 200) {
                         console.log(response.data.data)
-                        let errors ={}
-                        if (response.data.status === 'error') {
-                           document.getElementById("error").style.display='block';
-                           document.getElementById("error").textContent=response.data.data
-                        } else if (response.data.status === 'success') {
+                        let errors = {}
+                        if (response.data.status === 'success') {
                             alert('Data inserted')
+                            document.getElementById("reset").click();
+                            //ListCardComponent.refreshCards()
+                            window.location.reload()
                         }
+                        else {
+                            document.getElementById("error").style.display = 'block';
+                            document.getElementById("error").textContent = response.data.data
+                        }
+                    } else {
+                        document.getElementById("error").style.display = 'block';
+                        document.getElementById("error").textContent = response.data.data
                     }
 
+                }).catch(error => {
+                    if (!error.response) {
+                        document.getElementById("error").style.display = 'block';
+                        document.getElementById("error").textContent = 'Server is unreachable. Please try later'
+                    }
                 })
     }
 
     validate(values) {
-        document.getElementById("error").style.display='none';
+        document.getElementById("error").style.display = 'none';
         let errors = {}
         if (!values.cardHolderName) {
             errors.cardHolderName = 'Enter Card Holder Name'

@@ -40,8 +40,8 @@ class ListCardComponent extends Component {
                             <tr>
                                 <th>Name</th>
                                 <th>Card Number</th>
-                                <th>Balance</th>
                                 <th>Limit</th>
+                                <th>Balance</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,8 +51,8 @@ class ListCardComponent extends Component {
                                     <tr key={card.cardId}>
                                         <td>{card.cardHolderName}</td>
                                         <td>{card.cardNumber}</td>
-                                        <td>{card.limit}</td>
-                                        <td>{card.balance}</td>
+                                        <td>£{card.limit}</td>
+                                        <td>£{card.balance}</td>
                                     </tr>
                                 )
                             }
